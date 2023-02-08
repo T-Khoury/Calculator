@@ -6,11 +6,13 @@ const subtract = (a, b) => a - b;
 
 console.log(subtract(0, 10));
 
-const multiply = a => {
-    return a.length 
+const multiply = (a, b) => a * b;
+    /* return a.length 
     ? a.reduce((accumulator, nextNumber) => accumulator * nextNumber)
-    : 0;
-}
+    : 0; */
+    
+
+
 
 console.log(multiply([3, 10, 2]));
 
@@ -21,4 +23,13 @@ const divide = (a, b) => {
 }
 
 console.log(divide(10, 3));
+
+
+function operate(operator, a, b) {
+    return operator(a,b);
+}
+
+
+console.log(operate(subtract, 6, 3));
+
 
