@@ -5,14 +5,36 @@
     margin-top: 20px;
     display: grid;
     padding: 10px;
-    grid-template-rows: 30% repeat(5, 1fr);
+    grid-template-rows: 30% auto;
+    grid-template-areas: 
+        "display"
+        "buttons";
+}
+
+.buttons {
+    display: grid;
+    grid-template-rows: repeat(5, 1fr);
     grid-template-columns: repeat(4, 1fr);
     grid-template-areas: 
-        "display display display display"
-        ". . C CE"
+        "empty1 empty2 C CE"
         "7 8 9 multiply"
         "4 5 6 subtract"
         "1 2 3 add"
         "0 decimal equals add";
+
 }
+
+
+#add {
+    grid-area: add;
+}
+
+
+
+
+
+
+
+
+
 
