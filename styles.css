@@ -11,6 +11,14 @@
         "buttons";
 }
 
+.display {
+    display: grid;
+    grid-template-rows: 20% 80%;
+    grid-template-areas: 
+        "history"
+        "currentvalue";
+}
+
 .buttons {
     display: grid;
     grid-template-rows: repeat(5, 1fr);
@@ -29,6 +37,12 @@
     grid-area: add;
 }
 
+.window {
+    margin: none;
+    grid-area: currentvalue;
+    justify-self: end;
+    align-self: end;
+}
 
 
 
