@@ -52,13 +52,20 @@ function displayNumber() {
 }
 
 function clear() {
-    calculator.display = calculator.display.slice(0,-1);
+    let x = calculator.display.length
+    calculator.display = (x > 1) 
+    ? calculator.display.slice(0,-1)
+    : 0;
     refreshDisplay();
 }
 
 function clearEverything() {
     calculator.display = 0;
     refreshDisplay();
+}
+
+function storeNumber() {
+    calculator.number1 = parseInt(calculator.display);
 }
 
 const calculator = {
@@ -72,11 +79,13 @@ numButtons.forEach((button) => {
 
 const displayWindow = document.querySelector('.window');
 
-const backSpace = document.querySelector('#clear');
-backSpace.addEventListener('click', clear);
+const clearButton = document.querySelector('#clear');
+clearButton.addEventListener('click', clear);
 
-const resetDisplay = document.querySelector('#cleareverything');
-resetDisplay.addEventListener('click', clearEverything)
+const clearEverythingButton = document.querySelector('#cleareverything');
+clearEverythingButton.addEventListener('click', clearEverything)
+
+
 
 
 
