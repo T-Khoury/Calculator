@@ -1,49 +1,40 @@
 const add = (a, b) => a + b;
-
-console.log(add(1, 7));
-
 const subtract = (a, b) => a - b;
-
-console.log(subtract(0, 10));
-
 const multiply = (a, b) => a * b;
-    /* return a.length 
-    ? a.reduce((accumulator, nextNumber) => accumulator * nextNumber)
-    : 0; */
-    
-
-
-
-console.log(multiply([3, 10, 2]));
-
 const divide = (a, b) => { 
     return (b != 0)
     ? a / b
     : "OOPS"
 }
 
-console.log(divide(10, 3));
-
-
 function operate(operator, a, b) {
     return operator(a,b);
 }
 
-
-console.log(operate(subtract, 6, 3));
-
-
-
-
-function getNumber(button) {
-    (calculator.display == 0) 
-    ? calculator.display = parseInt(button.id) 
-    : calculator.display += button.id;
+function equals() {
+    calculator.total = operate(calculator.operator, calculator.number1, calculator.number2);
+    storeHistory();
+    calculator.number1 = calculator.total;
+    delete calculator.number2;
+    delete calculator.operator;
 
 }
 
+
+function getNumber(button) {
+    (!calculator.number1) ? calculator.number1 = parseInt(button.id)
+    : (calculator.number1 && !calculator.operator) ? calculator.number1 += button.id
+    : ((calculator.number1 && calculator.operator) && !calculator.number2) ? calculator.number2 = parseInt(button.id)
+    : calculator.number2 += button.id;
+}
+
+
 function refreshDisplay() {
-    displayWindow.textContent = calculator.display;
+    displayWindow.textContent = (calculator.number2)
+    ? calculator.number2
+    : (!calculator.number1) ? 0
+    : calculator.number1;
+    
 }
 
 function displayNumber() {
@@ -52,24 +43,89 @@ function displayNumber() {
 }
 
 function clear() {
-    let x = calculator.display.length
-    calculator.display = (x > 1) 
-    ? calculator.display.slice(0,-1)
+    let x = calculator.number1.length
+    calculator.number1 = (x > 1) 
+    ? calculator.number1.slice(0,-1)
     : 0;
     refreshDisplay();
 }
 
 function clearEverything() {
-    calculator.display = 0;
+    delete calculator.number2;
+    delete calculator.number1;
+    delete calculator.symbol;
+    delete calculator.operator;
+    historyWindow.textContent = '';
     refreshDisplay();
 }
 
-function storeNumber() {
-    calculator.number1 = parseInt(calculator.display);
+function convertNumber() {
+    calculator.number1 = parseInt(calculator.number1);
+
+    if (calculator.number2) {
+        calculator.number2 = parseInt(calculator.number2);
+    }
+    
 }
 
+
+
+
+function updateHistory() {
+    historyWindow.textContent = (!calculator.number2 && calculator.operator) 
+    ?`${calculator.number1} ${calculator.symbol}`
+    :`${calculator.history}`;
+
+}
+
+function storeHistory() {
+    calculator.history = `${calculator.number1} ${calculator.symbol} ${calculator.number2} = `;
+}
+
+
+
+function getOperator(button) {
+    console.log(button.id);
+    switch(button.id) {
+        case 'add':
+            calculator.operator = add;
+            calculator.symbol = "+";
+            break;
+        case 'subtract':
+            calculator.operator = subtract;
+            calculator.symbol = "-";
+            break;
+        case 'multiply':
+            calculator.operator = multiply;
+            calculator.symbol = "x";
+            break;
+        case 'divide':
+            calculator.operate = divide;
+            calculator.symbol = "/";
+            break;
+    } 
+}
+
+function operatorPress() {
+    convertNumber();
+    while (calculator.number2) {
+        equals();
+    };
+    getOperator(this);
+    updateHistory();
+}
+
+function equalsPress() {
+    convertNumber();
+    equals();
+    refreshDisplay();
+    updateHistory();
+}
+
+
+
+
 const calculator = {
-    display: 0,
 };
 
 const numButtons = document.querySelectorAll('.number');
@@ -78,6 +134,7 @@ numButtons.forEach((button) => {
 })
 
 const displayWindow = document.querySelector('.window');
+const historyWindow = document.querySelector('.history');
 
 const clearButton = document.querySelector('#clear');
 clearButton.addEventListener('click', clear);
@@ -85,6 +142,13 @@ clearButton.addEventListener('click', clear);
 const clearEverythingButton = document.querySelector('#cleareverything');
 clearEverythingButton.addEventListener('click', clearEverything)
 
+const operateButtons = document.querySelectorAll('.operator');
+operateButtons.forEach((button) => {
+    button.addEventListener('click', operatorPress);
+})
+
+const equalsButton = document.querySelector('.equals');
+equalsButton.addEventListener('click', equalsPress);
 
 
 

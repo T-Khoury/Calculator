@@ -45,6 +45,11 @@
     font-size: 40px;
 }
 
+.history {
+    grid-area: history;
+    justify-self: end;
+}
+
 
 
 
