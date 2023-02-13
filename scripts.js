@@ -4,126 +4,8 @@ const multiply = (a, b) => a * b;
 const divide = (a, b) => { 
     return (b != 0)
     ? a / b
-    : "OOPS"
+    : "OOPS";
 }
-
-function operate(operator, a, b) {
-    return operator(a,b);
-}
-
-function equals() {
-    calculator.total = operate(calculator.operator, calculator.number1, calculator.number2);
-    storeHistory();
-    calculator.number1 = calculator.total;
-    delete calculator.number2;
-    delete calculator.operator;
-
-}
-
-
-function getNumber(button) {
-    (!calculator.number1) ? calculator.number1 = parseInt(button.id)
-    : (calculator.number1 && !calculator.operator) ? calculator.number1 += button.id
-    : ((calculator.number1 && calculator.operator) && !calculator.number2) ? calculator.number2 = parseInt(button.id)
-    : calculator.number2 += button.id;
-}
-
-
-function refreshDisplay() {
-    displayWindow.textContent = (calculator.number2)
-    ? calculator.number2
-    : (!calculator.number1) ? 0
-    : calculator.number1;
-    
-}
-
-function displayNumber() {
-    getNumber(this);
-    refreshDisplay();
-}
-
-function clear() {
-    let x = calculator.number1.length
-    calculator.number1 = (x > 1) 
-    ? calculator.number1.slice(0,-1)
-    : 0;
-    refreshDisplay();
-}
-
-function clearEverything() {
-    delete calculator.number2;
-    delete calculator.number1;
-    delete calculator.symbol;
-    delete calculator.operator;
-    historyWindow.textContent = '';
-    refreshDisplay();
-}
-
-function convertNumber() {
-    calculator.number1 = parseInt(calculator.number1);
-
-    if (calculator.number2) {
-        calculator.number2 = parseInt(calculator.number2);
-    }
-    
-}
-
-
-
-
-function updateHistory() {
-    historyWindow.textContent = (!calculator.number2 && calculator.operator) 
-    ?`${calculator.number1} ${calculator.symbol}`
-    :`${calculator.history}`;
-
-}
-
-function storeHistory() {
-    calculator.history = `${calculator.number1} ${calculator.symbol} ${calculator.number2} = `;
-}
-
-
-
-function getOperator(button) {
-    console.log(button.id);
-    switch(button.id) {
-        case 'add':
-            calculator.operator = add;
-            calculator.symbol = "+";
-            break;
-        case 'subtract':
-            calculator.operator = subtract;
-            calculator.symbol = "-";
-            break;
-        case 'multiply':
-            calculator.operator = multiply;
-            calculator.symbol = "x";
-            break;
-        case 'divide':
-            calculator.operate = divide;
-            calculator.symbol = "/";
-            break;
-    } 
-}
-
-function operatorPress() {
-    convertNumber();
-    while (calculator.number2) {
-        equals();
-    };
-    getOperator(this);
-    updateHistory();
-}
-
-function equalsPress() {
-    convertNumber();
-    equals();
-    refreshDisplay();
-    updateHistory();
-}
-
-
-
 
 const calculator = {
 };
@@ -149,6 +31,139 @@ operateButtons.forEach((button) => {
 
 const equalsButton = document.querySelector('.equals');
 equalsButton.addEventListener('click', equalsPress);
+
+function operate(operator, a, b) {
+    return operator(a,b);
+}
+
+function equals() {
+    if (calculator.number2 && calculator.operator) {
+        calculator.total = operate(calculator.operator, calculator.number1, calculator.number2);
+        storeHistory();
+        calculator.number1 = calculator.total;
+        delete calculator.number2;
+        delete calculator.operator;
+    }
+}
+
+function getNumber(button) {
+    ((!calculator.number1 && !calculator.number2) || (calculator.total && !calculator.operator)) ? calculator.number1 = parseInt(button.id)
+    : ((!calculator.number2 && !calculator.operator)) ? calculator.number1 += button.id
+    : ((calculator.operator || calculator.total) && !calculator.number2) ? calculator.number2 = parseInt(button.id)
+    : calculator.number2 += button.id;
+}
+
+function refreshDisplay() {
+    displayWindow.textContent = (calculator.number2)
+    ? calculator.number2
+    : (!calculator.number1 && !calculator.operator) ? 0
+    : (calculator.number1 && calculator.operator) ? ''
+    : calculator.number1;
+    
+}
+
+function displayNumber() {
+    testReset();
+    getNumber(this);
+    refreshDisplay();
+}
+
+function clear() {
+    let x;
+    if (calculator.number2) {
+        x = calculator.number2.length
+        if (x > 1) {
+            calculator.number2 = calculator.number2.slice(0,-1);
+        }
+        else {
+            delete calculator.number2;
+        }
+    }
+        
+    refreshDisplay();
+}
+
+function clearEverything() {
+    delete calculator.number2;
+    delete calculator.number1;
+    delete calculator.symbol;
+    delete calculator.operator;
+    delete calculator.total;
+    delete calculator.history;
+    historyWindow.textContent = '';
+    refreshDisplay();
+}
+
+function convertNumber() {
+    calculator.number1 = parseInt(calculator.number1);
+
+    if (calculator.number2) {
+        calculator.number2 = parseInt(calculator.number2);
+    }
+    
+}
+
+
+function updateHistory() {
+    historyWindow.textContent = (!calculator.number2 && calculator.operator) 
+    ?`${calculator.number1} ${calculator.symbol}`
+    : (calculator.number1 && !calculator.history) ? `${calculator.number1} =`
+    : `${calculator.history}`;
+}
+
+function storeHistory() {
+    calculator.history = `${calculator.number1} ${calculator.symbol} ${calculator.number2} = `;
+}
+
+function testReset() {
+    if ((!calculator.number2 && calculator.history) && !calculator.operator) {
+        clearEverything();
+    }
+    return
+}
+
+
+
+function getOperator(button) {
+    console.log(button.id);
+    switch(button.id) {
+        case 'add':
+            calculator.operator = add;
+            calculator.symbol = "+";
+            break;
+        case 'subtract':
+            calculator.operator = subtract;
+            calculator.symbol = "-";
+            break;
+        case 'multiply':
+            calculator.operator = multiply;
+            calculator.symbol = "x";
+            break;
+        case 'divide':
+            calculator.operator = divide;
+            calculator.symbol = "/";
+            break;
+    } 
+}
+
+function operatorPress() {
+    convertNumber();
+    equals();
+    getOperator(this);
+    updateHistory();
+}
+
+function equalsPress() {
+    convertNumber();
+    equals();
+    refreshDisplay();
+    updateHistory();
+}
+
+
+
+
+
 
 
 
