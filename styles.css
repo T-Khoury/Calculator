@@ -1,23 +1,49 @@
+@import url('https://fonts.googleapis.com/css2?family=Lato&family=Oxanium&family=Roboto:wght@500&display=swap');
+
+
+:root {
+    --calculator-screen-color: #C8D5B9;
+    --calculator-color: #FAF3DD;
+    --button-color: #98c2ae;
+    --plus-button-color: #68B0AB;
+    --equals-button-color: #4A7C59;
+}
+
+html {
+    font-size: 16px;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #1f2421;
+    background-image: url(stacked-steps-haikei.svg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
 .container {
     height: 60vmin;
     width: 40vmin;
     margin: auto;
-    margin-top: 20px;
+    margin-top: 20vmin;
     display: grid;
-    padding: 10px;
+    padding: 5px;
     grid-template-rows: 30% auto;
     grid-template-areas: 
         "display"
         "buttons";
+    border-style: solid;
+    border-color: #124559;
+    border-radius: 10px;
+    border-width: 8px;
+    background-color: var(--calculator-color);
 }
 
 .display {
     display: grid;
+    padding-right: 4px;
     grid-template-rows: 20% 80%;
     grid-template-areas: 
         "history"
         "currentvalue";
-    background-color: lightgray;
+    background-color: var(--calculator-screen-color);
 }
 
 .buttons {
@@ -32,23 +58,45 @@
         "0 decimal equals add";
 
 }
+.number {
+    background-color: var(--button-color);
+}
+
+#cleareverything,
+#clear,
+#nothing1,
+#decimal,
+.operator {
+    background-color: var(--button-color);
+}
+.equals {
+    background-color: var(--equals-button-color);
+}
 
 
 #add {
     grid-area: add;
+    background-color: var(--plus-button-color);
 }
 
 .window {
-    margin-bottom: 10px;
+    margin-bottom: 1px;
     grid-area: currentvalue;
     justify-self: end;
     align-self: end;
-    font-size: 40px;
+    font-size: 3.8rem;
 }
 
 .history {
+    margin-top: 10px;
     grid-area: history;
     justify-self: end;
+    font-size: 1.4rem;
+}
+
+button {
+    margin: 1px;
+    font-size: 1.5rem;
 }
 
 
