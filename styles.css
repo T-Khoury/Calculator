@@ -17,6 +17,7 @@
     grid-template-areas: 
         "history"
         "currentvalue";
+    background-color: lightgray;
 }
 
 .buttons {

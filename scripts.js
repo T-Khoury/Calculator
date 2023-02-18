@@ -22,7 +22,10 @@ const clearButton = document.querySelector('#clear');
 clearButton.addEventListener('click', clear);
 
 const clearEverythingButton = document.querySelector('#cleareverything');
-clearEverythingButton.addEventListener('click', clearEverything)
+clearEverythingButton.addEventListener('click', clearEverything);
+
+const decimalButton = document.querySelector('#decimal');
+decimalButton.addEventListener('click', decimal)
 
 const operateButtons = document.querySelectorAll('.operator');
 operateButtons.forEach((button) => {
@@ -37,10 +40,10 @@ function operate(operator, a, b) {
 }
 
 function equals() {
-    if (calculator.number2 && calculator.operator) {
+    if ((calculator.number2 && calculator.operator) || (calculator.number2 === 0 && calculator.operator)) {
         calculator.total = operate(calculator.operator, calculator.number1, calculator.number2);
         storeHistory();
-        calculator.number1 = calculator.total;
+        calculator.number1 = parseFloat(calculator.total.toFixed(2));
         delete calculator.number2;
         delete calculator.operator;
     }
@@ -54,8 +57,9 @@ function getNumber(button) {
 }
 
 function refreshDisplay() {
-    displayWindow.textContent = (calculator.number2)
+    displayWindow.textContent = (calculator.number2 && calculator.number2 != 0)
     ? calculator.number2
+    : (calculator.number2 === 0) ? 0 
     : (!calculator.number1 && !calculator.operator) ? 0
     : (calculator.number1 && calculator.operator) ? ''
     : calculator.number1;
@@ -71,7 +75,7 @@ function displayNumber() {
 function clear() {
     let x;
     if (calculator.number2) {
-        x = calculator.number2.length
+        x = calculator.number2.length;
         if (x > 1) {
             calculator.number2 = calculator.number2.slice(0,-1);
         }
@@ -79,6 +83,16 @@ function clear() {
             delete calculator.number2;
         }
     }
+    if (calculator.number1 && !calculator.total) {
+        x = calculator.number1.length;
+        if (x > 1) {
+            calculator.number1 = calculator.number1.slice(0,-1);
+        }
+        else {
+            delete calculator.number1;
+        }
+    }
+
         
     refreshDisplay();
 }
@@ -94,11 +108,23 @@ function clearEverything() {
     refreshDisplay();
 }
 
+function decimal() {
+    if (displayWindow.textContent.includes('.')) {
+        return;
+    }
+    else if (!calculator.number2)  {
+        calculator.number1 += '.';
+    }
+    else {
+        calculator.number2 += '.';
+    }
+}
+
 function convertNumber() {
-    calculator.number1 = parseInt(calculator.number1);
+    calculator.number1 = parseFloat(calculator.number1);
 
     if (calculator.number2) {
-        calculator.number2 = parseInt(calculator.number2);
+        calculator.number2 = parseFloat(calculator.number2);
     }
     
 }
@@ -160,48 +186,7 @@ function equalsPress() {
     updateHistory();
 }
 
+function decimalPress() {
 
+}
 
-
-
-
-
-
-
-
-
-
-/* A "result" object will be created with:
-    number 1:
-    number 2:
-    operator:
-
-    input steps
-
-    number button press will save number to variable and display to div 
-
-    (if more number button presses here append number(s) to end of result.number1)
-
-    operator button press will save number from display variable to result.number1 and operator function to result.operator
-
-    2nd number button press will reassign display variable to that number
-
-    (if more number button presses here append number(s) to end of display variable
-
-
-    -- if there is a decimal ' . ' in one of the numbers append 1st instance of a decimal and then do no nothing when button is pressed if there is already a decimal in the number
-
-    then:
-
-    pressing equals will save display variable to #2, call result.operator(number1, number2), sand save the result to display and then to number 1 and clear number 2
-
-    pressing another operator before first one has been called will 
-
-    if there is a number 1 and an operator and a 2nd operator button or = is pushed, store display variable as result.number2 and call operator(result.number1, result.number2) and store result as display variable, then store display variable as result.number1, store the next operator button
-    
-
-    assign click and keyboard button evenlistener to each button
-
-    add display div and add current number 
-
-    */
