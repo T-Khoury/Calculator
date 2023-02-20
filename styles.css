@@ -21,6 +21,7 @@ html {
 .container {
     height: 60vmin;
     width: 40vmin;
+    max-width: 40vmin;
     margin: auto;
     margin-top: 20vmin;
     display: grid;
@@ -44,6 +45,7 @@ html {
         "history"
         "currentvalue";
     background-color: var(--calculator-screen-color);
+    max-width: 39.8vmin;
 }
 
 .buttons {
@@ -85,6 +87,8 @@ html {
     justify-self: end;
     align-self: end;
     font-size: 3.8rem;
+    max-width: 100%;
+    overflow: hidden;
 }
 
 .history {

@@ -51,7 +51,7 @@ function equals() {
 
 function getNumber(button) {
     ((!calculator.number1 && !calculator.number2) || (calculator.total && !calculator.operator)) ? calculator.number1 = parseInt(button.id)
-    : ((!calculator.number2 && !calculator.operator)) ? calculator.number1 += button.id
+    : ((!calculator.number2 && !calculator.operator) && ((calculator.number1.length <= 7) || typeof(calculator.number1) == 'number')) ? calculator.number1 += button.id
     : ((calculator.operator || calculator.total) && !calculator.number2) ? calculator.number2 = parseInt(button.id)
     : calculator.number2 += button.id;
 }
