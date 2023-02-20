@@ -25,7 +25,7 @@ const clearEverythingButton = document.querySelector('#cleareverything');
 clearEverythingButton.addEventListener('click', clearEverything);
 
 const decimalButton = document.querySelector('#decimal');
-decimalButton.addEventListener('click', decimal)
+decimalButton.addEventListener('click', decimalPress)
 
 const operateButtons = document.querySelectorAll('.operator');
 operateButtons.forEach((button) => {
@@ -109,8 +109,12 @@ function clearEverything() {
 }
 
 function decimal() {
-    if (displayWindow.textContent.includes('.')) {
+    if ((displayWindow.textContent.includes('.')) || calculator.history) {
         return;
+    }
+    else if (!calculator.number1 && !calculator.number2) {
+        calculator.number1 = 0;
+        calculator.number1 += '.';
     }
     else if (!calculator.number2)  {
         calculator.number1 += '.';
@@ -187,6 +191,8 @@ function equalsPress() {
 }
 
 function decimalPress() {
+    decimal();
+    refreshDisplay();
 
 }
 
